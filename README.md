@@ -5,7 +5,7 @@
 ### Matéria: Data Collection & Storage
 
 
-## Integrantes
+### Integrantes
 
 |Nome               |
 |----               |
@@ -27,6 +27,8 @@ Você pode desenvolver Open Source, Microsoft Azure ou AWS.
 
 # Aplicação
 
+Para a resolução da proposta foram utilizadas as ferramentas:
+Docker, Kafka e Zookeeper.
 
 Imagine sua empresa como uma grande estação de trem. O Kafka seria a ferrovia principal por onde passam todos os trens (dados), e o Zookeeper seria a torre de controle que gerencia os horários, rotas e a operação de toda a ferrovia.
 
@@ -69,8 +71,8 @@ O Apache Kafka é uma plataforma de streaming de dados distribuída de código a
 
 ZooKeeper é uma plataforma de coordenação distribuída de código aberto amplamente utilizada em sistemas distribuídos modernos. Ele fornece serviços de coordenação, sincronização e configuração para aplicativos distribuídos, ajudando a garantir a consistência, disponibilidade e tolerância a falhas em ambientes complexos.
 
-----
-### Arquitetura
+
+# Arquitetura
 
 ![mock-architecture](src/img/mock-architecture.jpg)
 
@@ -86,10 +88,9 @@ A combinação de Apache Kafka e Zookeeper oferece uma solução robusta e escal
 
 #### Kafka
     . Alta escalabilidade
-    . Baixa Latência
     . Persistência dos dados
     . Processamento em Tempo Real
-    . Múltiplos Consumidores
+    . Múltiplos Produtores e Consumidores
 
 
 ### Docker
@@ -178,19 +179,19 @@ Utilize o comando abaixo para criação de um tópico
 docker exec -it <id-conteiner-kafka> /opt/kafka/bin/kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic nome-topico
 ````
 
-Substitua `<id-conteiner-kafka>` pelo ID atual do container Kafka
+
 
 |Comando                          |Descrição|
 |-----------------------          |---|
-|`docker exec`                    |Comando de interação com o Docker                                                      |
+|`docker exec`                    |Comando de interação com o Docker                                    |
 |`-it`                            |`-i` Permite que você interaja com o processo em execução no contêiner e `-t`e aloca um terminal, permitindo utilização interativa do contêiner|
-|`<id-conteiner-kafka`            |ID do contêiner Kafka que pode ser encontrado utilizando `docker ps`|
-|`/opt/kafka/bin/kafka-topics.sh` |Caminho completo para o script que cria e gerencia os tópicos Kafka |
-|`--create`                       |Indica a criação de um novo tópico                                                        |
-|`--zookeeper zookeeper:2181`     |Especifica o endereço do servidor Zookeeper|
-|`--replication-factor 1`         | Define o fator de replicação do tópico|
-|`--partitions 1`                 | Define o número de partições do tópico|
-|`--topic nome-topico`            |Determina o nome do tópico|
+|`<id-conteiner-kafka`            |ID do contêiner Kafka que pode ser encontrado utilizando `docker ps` |
+|`/opt/kafka/bin/kafka-topics.sh` |Caminho completo para o script que cria e gerencia os tópicos Kafka  |
+|`--create`                       |Indica a criação de um novo tópico                                   |
+|`--zookeeper zookeeper:2181`     |Especifica o endereço do servidor Zookeeper                          |
+|`--replication-factor 1`         | Define o fator de replicação do tópico                              |
+|`--partitions 1`                 | Define o número de partições do tópico                              |
+|`--topic nome-topico`            |Determina o nome do tópico                                           |
 
 
 
@@ -205,6 +206,15 @@ Utilize o console do Kafka para produzir e consumir mensagens e testar a arquite
 docker exec -it <id-conteiner-kafka> /opt/kafka/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic nome-topico
 ```
 
+|Comando                          |Descrição                                                                  |
+|-----------------------          |---                                                                        |
+|`docker exec`                    |Comando de interação com o Docker                                          |
+|`-it`                            |`-i` Permite que você interaja com o processo em execução no contêiner e `-t`e aloca um terminal, permitindo utilização interativa do contêiner|
+|`<id-conteiner-kafka`            |ID do contêiner Kafka que pode ser encontrado utilizando `docker ps`       |
+|`/opt/kafka/bin/kafka-topics.sh` |Caminho completo para o script que cria e gerencia os tópicos Kafka        |
+|`--broker-list localhost:9092`  |Especifica o endereço do broker Kafka ao qual o "Produtor" deve se conectar |
+|`--topic nome-topico`            |Determina o nome do tópico                                                 |
+
 ![docker exec producer](src/img/docker-exec-producer.png)
 
 ### Consumir
@@ -212,6 +222,15 @@ docker exec -it <id-conteiner-kafka> /opt/kafka/bin/kafka-console-producer.sh --
 ```
 docker exec -it <id-conteiner-kafka>/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic nome-topico --from-beginning
 ```
+|Comando                          |Descrição                                                                        |
+|-----------------------          |---                                                                              |
+|`docker exec`                    |Comando de interação com o Docker                                                |
+|`-it`                            |`-i` Permite que você interaja com o processo em execução no contêiner e `-t`e aloca um terminal, permitindo utilização interativa do contêiner|
+|`<id-conteiner-kafka`            |ID do contêiner Kafka que pode ser encontrado utilizando `docker ps`             |
+|`/opt/kafka/bin/kafka-topics.sh` |Caminho completo para o script que cria e gerencia os tópicos Kafka              |
+|`---bootstrap-server localhost:9092`  |Especifica o endereço do broker Kafka ao qual o "Produtor" deve se conectar |
+|`--topic nome-topico`            |Determina o nome do tópico                                                       |
+|`--from-beginning`               |Instrui o "Consumidor" a processar as mensagens desde o início do tópico         |
 
 ![docker exec consumer](src/img/docker-exec-consumer.png)
 
@@ -225,4 +244,6 @@ Para parar e remover os contêineres Kafka e Zookeeper, execute o comando abaixo
 docker-compose down
 ```
 
-Isso vai parar e remover os containêineres criados pelo comando `docker-compose up`
+|Comando                |Descrição                                                                      |
+|-----------------------|---                                                                            |
+|`docker-compose down`  |Remove todos os contêineres, redes e volumes definidos no `docker-compose.yml` | 
