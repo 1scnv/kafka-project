@@ -14,7 +14,7 @@
 |Kayque Mendes      |
 |Vinícius Soares    |
 
----
+
 
 # Proposta
 
@@ -25,6 +25,28 @@ Você pode desenvolver Open Source, Microsoft Azure ou AWS.
     2. Vantagens e benefícios
     3. Manual de utilização
 
+# Aplicação
+
+
+Imagine sua empresa como uma grande estação de trem. O Kafka seria a ferrovia principal por onde passam todos os trens (dados), e o Zookeeper seria a torre de controle que gerencia os horários, rotas e a operação de toda a ferrovia.
+
+### No mundo real dos dados:
+
+`Kafka`: É a plataforma de streaming de dados. Ele recebe os dados (mensagens) de diversas fontes (estações de trem), organiza-os em tópicos (plataformas) e os distribui para os consumidores (trens) que precisam deles. Cada mensagem é como um vagão do trem, carregando uma parte da informação.
+
+`Zookeeper`: É o serviço de coordenação que gerencia o Kafka. Ele mantém o registro de todos os tópicos, partições, brokers (servidores Kafka) e consumidores. O Zookeeper garante que todos os componentes do sistema saibam o que está acontecendo e possam agir de forma coordenada.
+
+### Como funciona na prática:
+
+`Coleta de Dados`:
+        Seus sistemas (aplicativos, sensores, etc.) produzem dados e os enviam para o Kafka. Cada tipo de dado é enviado para um tópico específico.
+
+`Processamento`:
+        Os dados são particionados e replicados entre os brokers do Kafka para garantir alta disponibilidade e desempenho.
+        Consumidores (aplicativos) se conectam aos tópicos de interesse e processam os dados conforme a necessidade.
+
+`Transmissão`:
+        Os dados processados podem ser armazenados em bancos de dados, utilizados para gerar relatórios, alimentar sistemas de machine learning, etc.
 
 # Solução
 
@@ -158,7 +180,18 @@ docker exec -it <id-conteiner-kafka> /opt/kafka/bin/kafka-topics.sh --create --z
 
 Substitua `<id-conteiner-kafka>` pelo ID atual do container Kafka
 
-(Você pode localizar utilizando `docker ps`)
+|Comando                          |Descrição|
+|-----------------------          |---|
+|`docker exec`                    |Comando de interação com o Docker                                                      |
+|`-it`                            |`-i` Permite que você interaja com o processo em execução no contêiner e `-t`e aloca um terminal, permitindo utilização interativa do contêiner|
+|`<id-conteiner-kafka`            |ID do contêiner Kafka que pode ser encontrado utilizando `docker ps`|
+|`/opt/kafka/bin/kafka-topics.sh` |Caminho completo para o script que cria e gerencia os tópicos Kafka |
+|`--create`                       |Indica a criação de um novo tópico                                                        |
+|`--zookeeper zookeeper:2181`     |Especifica o endereço do servidor Zookeeper|
+|`--replication-factor 1`         | Define o fator de replicação do tópico|
+|`--partitions 1`                 | Define o número de partições do tópico|
+|`--topic nome-topico`            |Determina o nome do tópico|
+
 
 
 
